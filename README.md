@@ -1,4 +1,4 @@
-# GitHub Arc Runner Controller
+# GitHub Arc Runners
 
 This project facilitates the creation and deployment of a GitHub Arc Runner Controller and Arc-Runner-Sets at the organizational or repository level. It includes a Helm chart with deployment commands to install in one's Kubernetes cluster, Docker images used inside the scale sets, and Kubernetes manifests to create the necessary components.
 
