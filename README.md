@@ -37,6 +37,7 @@ Within the `images` directory, there are:
 
 - `base/dockerfile`: Dockerfile for building the base image used in the runner sets.
 - `kaniko/dockerfile`: Dockerfile for building an ubuntu based image with kaniko go binaries injected into it.
+  - The specific reason for this image is the kaniko image provided by kaniko comes with basic credential holders for ecr, acr, gar, etc. I wanted to be able to dynamically login to ecr using github actions marketplace actions and push the image there instead of having to statically define credentials. That way you can assume a role via OAuth, login to ECR, then push the kaniko image to that registry.
 - `makefile`: A makefile with commands to build and push the Docker images.
 
 ### Manifests
