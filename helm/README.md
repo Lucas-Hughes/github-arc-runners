@@ -1,3 +1,5 @@
+## These are made simpler in the `makefile` - this is simply for viewing full comamnds
+
 # Installing the ARC helm chart
 
 ```
