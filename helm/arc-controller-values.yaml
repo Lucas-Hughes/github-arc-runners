@@ -1,0 +1,7 @@
+# targetting the arc node pool
+
+tolerations:
+- key: "arc"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule"

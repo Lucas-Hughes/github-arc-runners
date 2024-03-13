@@ -1,0 +1,6 @@
+githubConfigUrl: "https://github.com/Lucas-Hughes"
+github_token: "github-auth-config"
+# githubConfigSecret: "github-auth-config" - for github OAuth apps
+
+containerMode:
+  type: "dind"

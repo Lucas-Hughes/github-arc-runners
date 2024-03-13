@@ -1,0 +1,9 @@
+# This is for the pvc needed by the kubernetes mode runner
+# https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller#using-kubernetes-mode
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: k8s-mode
+provisioner: pd.csi.storage.gke.io # adjust for cloud provider
+allowVolumeExpansion: true
+reclaimPolicy: Delete

@@ -1,0 +1,12 @@
+# Use this file if you created an OAuth app for GitHub
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-app-config
+  namespace: arc-runners
+type: Opaque
+stringData:
+  github_app_id: # app id
+  github_app_installation_id: # app installation id
+  github_app_private_key: # private rsa key

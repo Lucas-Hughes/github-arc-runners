@@ -1,0 +1,46 @@
+githubConfigUrl: "https://github.com/Lucas-Hughes"
+github_token: "github-auth-config"
+# githubConfigSecret: "github-auth-config" - for github OAuth apps
+
+tolerations:
+- key: "arc"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule"
+
+containerMode:
+  type: "kubernetes" 
+  kubernetesModeWorkVolumeClaim:
+    accessModes: ["ReadWriteOnce"]
+    storageClassName: "k8s-mode"
+    resources:
+      requests:
+        storage: 2Gi
+
+template:
+  spec:
+    initContainers:
+    - name: kube-init
+      image: lucasjhughes/base-arc-runner:1.0
+      imagePullPolicy: IfNotPresent
+      command: ["sudo", "chown", "-R", "runner:runner", "/home/runner/_work"]
+      volumeMounts:
+      - name: work
+        mountPath: /home/runner/_work
+    containers:
+      - name: runner
+        image: lucasjhughes/base-arc-runner:1.0
+        imagePullPolicy: IfNotPresent
+        command: ["/home/runner/run.sh"]
+        env:
+          - name: ACTIONS_RUNNER_CONTAINER_HOOKS
+            value: /home/runner/k8s/index.js
+          - name: ACTIONS_RUNNER_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+            value: "false"
+        volumeMounts:
+          - name: work
+            mountPath: /home/runner/_work

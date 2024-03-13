@@ -1,0 +1,14 @@
+# This is for the pvc needed by the kubernetes mode runner
+# https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller#using-kubernetes-mode
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: k8s-cache-pvc
+  namespace: arc-runners
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: k8s-mode

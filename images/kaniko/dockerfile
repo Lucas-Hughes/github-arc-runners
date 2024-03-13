@@ -1,0 +1,55 @@
+# Use ARG to allow specifying the Ubuntu version and Kaniko version at build time
+ARG UBUNTU_VERSION=latest
+ARG KANIKO_VERSION=latest
+
+# First stage to pull and unpack the Kaniko executor image
+FROM ubuntu:${UBUNTU_VERSION} as kaniko
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install skopeo, curl, and ca-certificates. This ensures SSL/TLS connections can be securely established.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    skopeo \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and install umoci
+RUN curl -L https://github.com/opencontainers/umoci/releases/download/v0.4.7/umoci.amd64 -o /usr/local/bin/umoci && \
+    chmod +x /usr/local/bin/umoci
+
+# Set the working directory
+WORKDIR /workdir-kaniko
+
+# Copy Kaniko executor image to OCI format and unpack it
+RUN skopeo copy docker://gcr.io/kaniko-project/executor:v${KANIKO_VERSION} oci:kaniko:current
+RUN umoci unpack --image kaniko:current unpacked
+
+# Second stage to create the final image
+FROM ubuntu:${UBUNTU_VERSION}
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Docker CLI in the final stage
+RUN apt-get update && apt-get install -y --no-install-recommends docker.io \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create the necessary directories for Kaniko and Docker config
+RUN mkdir -p /opt/kaniko/.docker
+RUN mkdir -p /kaniko/.docker
+
+# Copy the Kaniko executor and credential helpers from the first stage
+COPY --from=kaniko /workdir-kaniko/unpacked/rootfs/kaniko/executor /opt/kaniko/
+COPY --from=kaniko /workdir-kaniko/unpacked/rootfs/kaniko/docker-credential-ecr-login /opt/kaniko/
+COPY --from=kaniko /workdir-kaniko/unpacked/rootfs/kaniko/docker-credential-gcr /opt/kaniko/
+
+# Ensure the Kaniko directory and its subdirectories have the correct permissions
+RUN chmod -R 755 /opt/kaniko
+
+# Set PATH to include Kaniko
+ENV PATH="/opt/kaniko:${PATH}"
+
+# Setup Docker config environment variable
+ENV DOCKER_CONFIG="/opt/kaniko/.docker/"
