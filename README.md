@@ -12,7 +12,7 @@ This project facilitates the creation and deployment of a GitHub Arc Runner Cont
   
 ### Kubernetes infra:
 - A kubernetes cluster
-- Namespaces for the `arc-systems` and `arc-runners` - this can be customized to whatever you need, including one per scale set. The `github-app.yaml/github-pay.yaml` used in the `helm-*.yaml` must be in the same namespace as secrets are namespaced resources
+- Namespaces for the `arc-systems` and `arc-runners` - this can be customized to whatever you need, including one per scale set. The `github-app.yaml/github-pat.yaml` used in the `helm-*.yaml` must be in the same namespace as secrets are namespaced resources
   
 ## Quickstart
 If you care less about what is involved in the project and want a quick guide to getting the ARC runners up and going, follow these steps:
@@ -23,7 +23,7 @@ If you care less about what is involved in the project and want a quick guide to
    - Run `make install-arc` then `make install-runner-set`
    - Verify the `arc-gha-rs-controller-xxxx` and `arc-runner-set-xxxxx-listener` pods came up
    - You're now ready to execute jobs in github using the `runs-on: <helm_deployment_name>` - in this case `arc-runner-set`
-   
+
 ## Structure
 
 The project is organized into three main directories:
