@@ -1,0 +1,16 @@
+githubConfigUrl: "https://github.com/Lucas-Hughes"
+github_token: "github-auth-config"
+
+template:
+  spec:
+    containers:
+    - name: runner
+      image: "lucasjhughes/base-arc-runner:1.0"
+      imagePullPolicy: IfNotPresent
+      command: ["/home/runner/run.sh"]
+
+tolerations:
+- key: "arc"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule"
