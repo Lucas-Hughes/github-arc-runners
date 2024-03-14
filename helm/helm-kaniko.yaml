@@ -1,12 +1,5 @@
 githubConfigUrl: "https://github.com/Lucas-Hughes"
-github_token: "github-auth-config"
-# githubConfigSecret: "github-auth-config" - for github OAuth apps
-
-tolerations:
-- key: "arc"
-  operator: "Equal"
-  value: "true"
-  effect: "NoSchedule"
+githubConfigSecret: "github-auth-config"
 
 containerMode:
   type: "kubernetes" 
