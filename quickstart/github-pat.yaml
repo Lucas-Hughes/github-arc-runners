@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-auth-config
+  namespace: arc-runners
+type: Opaque
+data:
+  github_token: # this need to be base64encoded, not plaintext

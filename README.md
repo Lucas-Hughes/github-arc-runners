@@ -12,14 +12,24 @@ This project facilitates the creation and deployment of a GitHub Arc Runner Cont
   
 ### Kubernetes infra:
 - A kubernetes cluster
-- Namespaces for the `arc-systems` and `arc-runners` - this can be customized to meet your needs (eg create a namespace per runner scale set in the helm installation)
+- Namespaces for the `arc-systems` and `arc-runners` - this can be customized to whatever you need, including one per scale set. The `github-app.yaml/github-pat.yaml` used in the `helm-*.yaml` must be in the same namespace as secrets are namespaced resources
   
+## Quickstart
+If you care less about what is involved in the project and want a quick guide to getting the ARC runners up and going, follow these steps:
+   - Once cloned/copied, navigate to the `./quickstart` directory
+   - Create a OAuth app or Personal Access token with proper permissions - https://github.com/settings/apps
+      - PAT permissions - for organizational runners, use `admin:org`; for repo runners, use `repo`
+   - Deploy the respective kubernetes secret manifest using your OAuth app or a base64 encoded version of your PAT
+   - Run `make install-arc` then `make install-runner-set`
+   - Verify the `arc-gha-rs-controller-xxxx` and `arc-runner-set-xxxxx-listener` pods came up
+   - You're now ready to execute jobs in github using the `runs-on: <helm_deployment_name>` - in this case `arc-runner-set`
+
 ## Structure
 
 The project is organized into three main directories:
 
-- `helm`: Contains the Helm chart and related files for deploying the Arc Runner Controller.
-- `images`: Includes Dockerfiles for building the images used in the Arc Runner Sets.
+- `helm`: Contains the Helm chart and related files for deploying the Actions Runner Controller(ARC).
+- `images`: Includes Dockerfiles for building the images used in the ARC Runner Sets.
 - `manifests`: Houses Kubernetes manifests for creating necessary infrastructure components.
 
 ### Helm
@@ -27,7 +37,7 @@ The project is organized into three main directories:
 Inside the `helm` directory, you will find:
 
 - `README.md`: Provides detailed instructions on how to use the Helm chart.
-- `arc-controller-values.yaml`: Customizable values for the Arc Runner Controller deployment.
+- `arc-controller-values.yaml`: Customizable values for the ARC deployment.
 - `helm-base.yaml`, `helm-dind.yaml`, `helm-kaniko.yaml`: Various Helm configuration files for different deployment scenarios.
 - `makefile`: A makefile with commands to help install, upgrade, and destroy the Helm chart deployments.
 
@@ -51,7 +61,7 @@ The `manifests` folder includes Kubernetes manifests:
 
 ## Getting Started
 
-To deploy the GitHub Arc Runner Controller and Arc-Runner-Sets, follow these steps:
+To deploy the GitHub actions-runner-controller and arc-runner-sets, follow these steps:
 
 1. **Apply the Kubernetes Manifests**:
    - Apply the manifests in the `manifests` directory to your Kubernetes cluster to set up the necessary infrastructure components.
