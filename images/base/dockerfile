@@ -1,5 +1,5 @@
 # Use actions runner as a base
-FROM ghcr.io/actions/actions-runner:2.313.0@sha256:82a7c263f5c861b1b0612b30634b3e3d9054c1baa5466d8f195b431386bfe2de
+FROM ghcr.io/actions/actions-runner:latest
 
 USER root
 
