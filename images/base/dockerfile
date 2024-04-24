@@ -7,37 +7,21 @@ USER root
 RUN apt-get update -q
 
 # Install AWS CLI, Git, curl, jq, apt transport, ca certificates, gnupg, lsb release, wget, unzip
-RUN apt-get install -y -q awscli git curl jq apt-transport-https ca-certificates gnupg lsb-release wget unzip
+RUN apt-get install -y -q awscli git curl jq apt-transport-https ca-certificates gnupg lsb-release wget unzip python3.11
 
-# Install Google Cloud SDK
-RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz && \
-    mkdir -p /usr/local/gcloud && \
-    tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz && \
-    /usr/local/gcloud/google-cloud-sdk/install.sh
-
-# Install Terraform
+# Install Terraform for AMD64
 RUN wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip && \
     unzip terraform_1.5.7_linux_amd64.zip -d /usr/local/bin/ && \
     rm terraform_1.5.7_linux_amd64.zip
-
-# Install Snyk
-RUN curl --compressed https://static.snyk.io/cli/latest/snyk-linux -o snyk && \
-    chmod +x ./snyk && \
-    mv ./snyk /usr/local/bin/
-
-# Setup Docker repository and install Docker
-RUN install -m 0755 -d /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
-    chmod a+r /etc/apt/keyrings/docker.asc && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
-    apt-get update && \
-    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+<<<<<<< Updated upstream
 # Adding the Google Cloud SDK to PATH
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
+=======
+>>>>>>> Stashed changes
 USER runner
