@@ -8,10 +8,6 @@ template:
   spec:
     containers:
     - name: runner
-<<<<<<< Updated upstream
       image: "lucasjhughes/base-arc-runner:1.0"
       imagePullPolicy: IfNotPresent
-=======
-      image: 762554040535.dkr.ecr.us-east-1.amazonaws.com/arc-runner-image:1.0.1
->>>>>>> Stashed changes
       command: ["/home/runner/run.sh"]
